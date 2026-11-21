@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopBridge - Buy. Sell. Grow Together.</title>
+  <meta name="description" content="A complete e-commerce platform for shoppers and sellers. Discover products, shop securely, and grow your business.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sb: {
+              blue: '#0265D2',
+              blueDark: '#00479E',
+              blueLight: '#EBF4FE',
+              navy: '#0D2040',
+              navyDark: '#081427',
+              gray: '#5A6A85',
+              surface: '#F8FAFC',
+              accent: '#F59E0B'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#F8FAFC] text-[#0D2040] min-h-screen flex flex-col antialiased">
+
+  <!-- Role Switcher Top Notification Bar -->
+  <div class="bg-[#0D2040] text-white text-xs py-2 px-4 border-b border-slate-700/60 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/30">
+          SRS v1.0 Multi-Vendor System
+        </span>
+        <span class="hidden sm:inline text-slate-300">Fast simulated environment with live persistence & role switching:</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <label for="role-select" class="text-slate-300 font-medium">Switch Active Role:</label>
+        <select id="role-select" class="bg-slate-800 text-white text-xs rounded-md px-2.5 py-1 border border-slate-600 focus:outline-none focus:ring-1 focus:ring-blue-400 cursor-pointer">
+          <option value="user">Shopper (Buyer View)</option>
+          <option value="seller">Seller (Seller Central & Analytics)</option>
+          <option value="admin">Administrator (Moderation & Control)</option>
+          <option value="support">Support Agent (Helpdesk & Tickets)</option>
+        </select>
+        <button id="btn-quick-orders" class="text-blue-300 hover:text-white underline text-xs ml-2">My Orders (1 active)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header & Navigation Bar (Matches Mockup 3.1.1) -->
+  <header class="bg-white border-b border-slate-200 sticky top-8 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <a href="#" id="brand-logo" class="flex items-center gap-2.5 group flex-shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-sb-blue group-hover:scale-105 transition-transform">
+          <!-- Custom Speed Cart Icon -->
+          <svg class="w-7 h-7 text-sb-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="1" y1="5" x2="6" y2="5"></line>
+            <line x1="2" y1="9" x2="5" y2="9"></line>
+            <circle cx="9" cy="20" r="1.5"></circle>
+            <circle cx="18" cy="20" r="1.5"></circle>
+            <path d="M6 5h2.5l2.4 10.5a1.5 1.5 0 0 0 1.5 1.2h7.6a1.5 1.5 0 0 0 1.5-1.2L22.5 7.5H8.5"></path>
+          </svg>
+        </div>
+        <span class="text-2xl font-extrabold tracking-tight text-[#0D2040]">
+          Shop<span class="text-sb-blue">Bridge</span>
+        </span>
+      </a>
+
+      <!-- Dropdown Navigation Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-700">
+        <!-- Shop Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 py-2 hover:text-sb-blue transition-colors">
+            Shop
+            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-sb-blue group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="absolute left-0 top-full pt-2 w-48 opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all duration-200 z-50">
+            <div class="bg-white rounded-xl shadow-xl border border-slate-100 p-2 text-xs font-medium space-y-1">
+              <a href="#catalog" class="block px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-sb-blue transition-colors">Browse All Products</a>
+              <a href="#catalog" data-filter="featured" class="block px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-sb-blue transition-colors">Featured & Trending</a>
+              <a href="#catalog" data-filter="deals" class="block px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-sb-blue transition-colors">Deals & Discounts</a>
+              <a href="#catalog" data-filter="new" class="block px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-sb-blue transition-colors">New Arrivals</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sell Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 py-2 hover:text-sb-blue transition-colors">
+            Sell
+            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-sb-blue group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="absolute left-0 top-full pt-2 w-52 opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all duration-200 z-50">
+            <div class="bg-white rounded-xl shadow-xl border border-slate-100 p-2 text-xs font-medium space-y-1">
+              <button id="nav-btn-seller-portal" class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-sb-blue transition-colors">Seller Dashboard</button>
+              <button id="nav-btn-apply-seller" class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-sb-blue transition-colors">Register a New Store</button>
+              <button id="nav-btn-fee-schedule" class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-50 hover:text-sb-blue transition-colors">Commission & Fees (6-10%)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categories Dropdown -->
+        <div class="relative group">
+          <button class="flex items-center gap-1 py-2 hover:text-sb-blue transition-colors">
+            Categories
+            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-sb-blue group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <div class="absolute left-0 top-full pt-2 w-56 opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all duration-200 z-50">
+            <div class="bg-white rounded-xl shadow-xl border border-slate-100 p-2 text-xs font-medium space-y-1" id="nav-categories-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Search Bar with Live Suggestions (Center / Right) -->
+      <div class="flex-1 max-w-md relative mx-2">
+        <div class="relative flex items-center">
+          <input 
+            type="text" 
+            id="global-search-input" 
+            placeholder="Search for products..." 
+            class="w-full bg-[#F1F5F9] border border-slate-200/80 rounded-full py-2.5 pl-5 pr-11 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sb-blue/30 focus:border-sb-blue focus:bg-white transition-all shadow-inner"
+          >
+          <button id="btn-search" class="absolute right-3.5 text-slate-400 hover:text-sb-blue transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </button>
+        </div>
+        <!-- Live Autocomplete Dropdown -->
+        <div id="search-suggestions" class="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden hidden z-50">
+          <div class="p-2 border-b border-slate-50 text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-3">
+            Matching Products
+          </div>
+          <div id="search-suggestions-list" class="max-h-60 overflow-y-auto divide-y divide-slate-50 text-xs">
+            <!-- Dynamic suggestion items -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions: Profile, Wishlist, Cart & Become a Seller -->
+      <div class="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+        
+        <!-- Wishlist Icon -->
+        <button id="btn-wishlist-toggle" class="p-2 rounded-full text-slate-600 hover:text-red-500 hover:bg-slate-100 transition-colors relative" title="Wishlist">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+          <span id="wishlist-badge" class="hidden absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+
+        <!-- User Profile Dropdown -->
+        <div class="relative group">
+          <button id="btn-user-menu" class="p-2 rounded-full text-slate-600 hover:text-sb-blue hover:bg-slate-100 transition-colors" title="My Account">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+          </button>
+          <div class="absolute right-0 top-full pt-2 w-56 opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all duration-200 z-50">
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-3 text-xs space-y-1 font-medium">
+              <div class="pb-2 mb-2 border-b border-slate-100 px-2">
+                <div class="font-bold text-slate-800" id="header-user-name">Udhay Kumar</div>
+                <div class="text-[11px] text-slate-400" id="header-user-email">udhay@shopbridge.com</div>
+              </div>
+              <button id="menu-btn-profile" class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-slate-100 text-slate-700">Account Profile & Addresses</button>
+              <button id="menu-btn-orders" class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-slate-100 text-slate-700">My Orders & Returns</button>
+              <button id="menu-btn-seller-dash" class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-blue-50 text-sb-blue font-semibold">Seller Central Dashboard</button>
+              <button id="menu-btn-admin-dash" class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-purple-50 text-purple-700 font-semibold">Admin Moderation Console</button>
+              <div class="pt-2 border-t border-slate-100">
+                <button id="menu-btn-logout" class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-red-50 text-red-600">Sign Out</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart Button with Red Badge (Matches Mockup) -->
+        <button id="btn-cart-toggle" class="relative p-2 rounded-full text-slate-600 hover:text-sb-blue hover:bg-slate-100 transition-colors" title="Shopping Cart">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          <span id="cart-badge-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm">
+            0
+          </span>
+        </button>
+
+        <!-- "Become a Seller" Button (Solid Royal Blue Pill - Matches Mockup) -->
+        <button id="btn-become-seller" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-bold text-white bg-sb-blue hover:bg-sb-blueDark shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all active:scale-95">
+          Become a Seller
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container: Dynamic Views (Shopper View, Seller Portal, Admin Console) -->
+  <main id="app-view-container" class="flex-grow">
+    
+    <!-- ==================== VIEW 1: SHOPPER / USER LANDING PAGE ==================== -->
+    <div id="view-shopper" class="w-full">
+      
+      <!-- HERO SECTION (Exact pixel-accurate reproduction of Mockup) -->
+      <section class="hero-gradient-bg py-10 lg:py-16 px-4 sm:px-6 lg:px-8 border-b border-blue-100/60 relative">
+        <div class="hero-blob-1"></div>
+        <div class="hero-blob-2"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- LEFT COLUMN: Shopper with Phone & Floating Badges -->
+            <div class="lg:col-span-4 relative flex justify-center lg:justify-start">
+              <div class="relative w-72 sm:w-80 md:w-96 max-w-full">
+                <!-- Shopper Model Image -->
+                <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white/80 bg-gradient-to-b from-blue-100 to-white">
+                  <img src="assets/hero_woman.png" alt="Happy Shopper on ShopBridge" class="w-full h-auto object-cover transform hover:scale-102 transition-transform duration-500">
+                </div>
+
+                <!-- Floating Headphones Rating Card -->
+                <div class="absolute -top-4 -right-4 bg-white/95 backdrop-blur-md p-2.5 rounded-2xl shadow-xl border border-white/80 animate-float flex flex-col items-center gap-1">
+                  <div class="w-12 h-12 bg-slate-100 rounded-xl overflow-hidden flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&auto=format&fit=crop&q=80" alt="Headphones" class="w-full h-full object-cover">
+                  </div>
+                  <div class="flex items-center text-amber-400 text-xs">
+                    ★★★★★
+                  </div>
+                </div>
+
+                <!-- Floating "For Users" Card (Matches Mockup) -->
+                <div class="absolute -bottom-6 -left-2 sm:-left-6 right-2 sm:right-auto bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/80 max-w-xs animate-float-opposite">
+                  <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-sb-blue flex-shrink-0">
+                      <!-- Blue Shopping Bag Icon -->
+                      <svg class="w-5 h-5 text-sb-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-bold text-[#0D2040]">For Users</h4>
+                      <p class="text-xs text-slate-600 mt-0.5 leading-snug">Discover amazing products, enjoy a seamless shopping experience.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CENTER COLUMN: Brand, Speed Cart, Tagline & CTAs -->
+            <div class="lg:col-span-4 text-center px-2 py-6">
+              <!-- Animated Speed Cart Icon -->
+              <div class="inline-flex items-center justify-center mb-3">
+                <svg class="w-16 h-16 text-sb-blue transform -rotate-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="1" y1="5" x2="6" y2="5"></line>
+                  <line x1="2" y1="9" x2="5" y2="9"></line>
+                  <circle cx="9" cy="20" r="1.5"></circle>
+                  <circle cx="18" cy="20" r="1.5"></circle>
+                  <path d="M6 5h2.5l2.4 10.5a1.5 1.5 0 0 0 1.5 1.2h7.6a1.5 1.5 0 0 0 1.5-1.2L22.5 7.5H8.5"></path>
+                </svg>
+              </div>
+
+              <!-- Title & Tagline -->
+              <h1 class="text-4xl sm:text-5xl font-black text-[#0D2040] tracking-tight">
+                ShopBridge
+              </h1>
+              <p class="text-2xl sm:text-3xl font-extrabold text-[#0D2040] mt-1.5 tracking-tight">
+                Buy. Sell. Grow Together.
+              </p>
+              <p class="text-sm sm:text-base text-slate-600 mt-3 max-w-sm mx-auto font-medium leading-relaxed">
+                A complete e-commerce platform for shoppers and sellers.
+              </p>
+
+              <!-- Hero Call-To-Action Buttons (Matches Mockup) -->
+              <div class="mt-7 flex flex-wrap items-center justify-center gap-3.5">
+                <a href="#catalog" id="btn-hero-shop" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold text-white bg-sb-blue hover:bg-sb-blueDark shadow-lg shadow-blue-500/25 transition-all hover:scale-105 active:scale-95">
+                  Start Shopping
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+                <button id="btn-hero-sell" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-bold text-[#0D2040] bg-white hover:bg-slate-50 border border-slate-300 shadow-md transition-all hover:scale-105 active:scale-95">
+                  Start Selling
+                  <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Seller with Laptop & Floating Badges -->
+            <div class="lg:col-span-4 relative flex justify-center lg:justify-end">
+              <div class="relative w-72 sm:w-80 md:w-96 max-w-full">
+                <!-- Seller Model Image -->
+                <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-white/80 bg-gradient-to-b from-amber-50 to-white">
+                  <img src="assets/hero_seller.png" alt="Entrepreneur Seller on ShopBridge" class="w-full h-auto object-cover transform hover:scale-102 transition-transform duration-500">
+                </div>
+
+                <!-- Floating Growth Analytics Badge -->
+                <div class="absolute -top-4 -left-4 bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-white/80 animate-float flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-lg bg-green-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
+                    ↗
+                  </div>
+                  <div class="text-left">
+                    <div class="text-[10px] text-slate-400 font-semibold uppercase">Monthly Growth</div>
+                    <div class="text-xs font-bold text-slate-800">+148% Sales</div>
+                  </div>
+                </div>
+
+                <!-- Floating "For Sellers" Card (Matches Mockup) -->
+                <div class="absolute -bottom-6 -right-2 sm:-right-6 left-2 sm:left-auto bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/80 max-w-xs animate-float-opposite">
+                  <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600 flex-shrink-0">
+                      <!-- Storefront Icon -->
+                      <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-bold text-[#0D2040]">For Sellers</h4>
+                      <p class="text-xs text-slate-600 mt-0.5 leading-snug">List your products, reach more customers, and grow your business.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- TRUST BAR (Exact match to Mockup 3.1.1) -->
+      <section class="bg-white py-6 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            
+            <!-- Item 1: Secure Payments -->
+            <div class="trust-bar-item flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 text-sb-blue flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-sb-blue" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-[#0D2040]">Secure Payments</h4>
+                <p class="text-xs text-slate-500">Your transactions are safe</p>
+              </div>
+            </div>
+
+            <!-- Item 2: Fast & Reliable Delivery -->
+            <div class="trust-bar-item flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 text-sb-blue flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-sb-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path></svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-[#0D2040]">Fast & Reliable Delivery</h4>
+                <p class="text-xs text-slate-500">Get your orders on time</p>
+              </div>
+            </div>
+
+            <!-- Item 3: 24/7 Support -->
+            <div class="trust-bar-item flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 text-sb-blue flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-sb-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3"></path></svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-[#0D2040]">24/7 Support</h4>
+                <p class="text-xs text-slate-500">We're here to help</p>
+              </div>
+            </div>
+
+            <!-- Item 4: Trusted Marketplace -->
+            <div class="trust-bar-item flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 text-sb-blue flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-sb-blue" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-[#0D2040]">Trusted Marketplace</h4>
+                <p class="text-xs text-slate-500">Shop with confidence</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS SECTION (Exact match to Mockup 3.1.1) -->
+      <section class="py-16 bg-[#F8FAFC]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-12">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0D2040]">
+              How It Works?
+            </h2>
+            <div class="w-12 h-1 bg-sb-blue mx-auto mt-2 rounded-full"></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row items-center justify-center gap-6 max-w-4xl mx-auto">
+            
+            <!-- Step 1: For Users -->
+            <div class="flex-1 text-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow w-full">
+              <div class="relative w-16 h-16 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center text-sb-blue">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                <span class="step-number-badge">1</span>
+              </div>
+              <h3 class="text-base font-bold text-[#0D2040]">For Users</h3>
+              <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                Browse, add to cart and checkout easily.
+              </p>
+            </div>
+
+            <!-- Arrow 1 -->
+            <div class="hidden md:flex text-slate-300">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </div>
+
+            <!-- Step 2: For Sellers -->
+            <div class="flex-1 text-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow w-full">
+              <div class="relative w-16 h-16 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center text-sb-blue">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                <span class="step-number-badge">2</span>
+              </div>
+              <h3 class="text-base font-bold text-[#0D2040]">For Sellers</h3>
+              <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                List products and manage your store.
+              </p>
+            </div>
+
+            <!-- Arrow 2 -->
+            <div class="hidden md:flex text-slate-300">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </div>
+
+            <!-- Step 3: Grow Together -->
+            <div class="flex-1 text-center bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow w-full">
+              <div class="relative w-16 h-16 mx-auto mb-4 bg-blue-50 rounded-full flex items-center justify-center text-sb-blue">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                <span class="step-number-badge">3</span>
+              </div>
+              <h3 class="text-base font-bold text-[#0D2040]">Grow Together</h3>
+              <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                Build your business and enjoy a better shopping experience.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PRODUCT DISCOVERY & CATALOG (FR-6 to FR-10) ==================== -->
+      <section id="catalog" class="py-12 bg-white border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <!-- Section Title & Quick Filters -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+              <span class="text-xs font-bold text-sb-blue uppercase tracking-wider">Explore Marketplace</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0D2040]">Featured Products</h2>
+            </div>
+
+            <!-- Category Pills Bar -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0" id="category-pills-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Main Catalog Layout: Filters Sidebar + Products Grid -->
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <!-- Filters Sidebar (Desktop) -->
+            <div class="hidden lg:block bg-slate-50 p-6 rounded-2xl border border-slate-200 h-fit space-y-6">
+              <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <h3 class="font-bold text-sm text-slate-800">Filter By</h3>
+                <button id="btn-reset-filters" class="text-xs text-sb-blue hover:underline font-semibold">Reset All</button>
+              </div>
+
+              <!-- Price Filter -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">Max Price: <span id="price-val-label" class="text-sb-blue font-extrabold">$500</span></label>
+                <input type="range" id="filter-price-range" min="20" max="500" value="500" step="10" class="w-full accent-sb-blue cursor-pointer">
+                <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                  <span>$20</span>
+                  <span>$500</span>
+                </div>
+              </div>
+
+              <!-- Rating Filter -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">Customer Rating</label>
+                <div class="space-y-1.5 text-xs text-slate-600">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="rating-filter" value="0" checked class="accent-sb-blue"> All Ratings
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="rating-filter" value="4.5" class="accent-sb-blue"> 4.5 ★ & above
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="rating-filter" value="4.0" class="accent-sb-blue"> 4.0 ★ & above
+                  </label>
+                </div>
+              </div>
+
+              <!-- Availability -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">Availability</label>
+                <label class="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                  <input type="checkbox" id="filter-in-stock" class="accent-sb-blue rounded"> In Stock Only
+                </label>
+              </div>
+
+              <!-- Verified Sellers Banner -->
+              <div class="p-3.5 bg-blue-50/70 rounded-xl border border-blue-100 text-xs text-slate-600">
+                <div class="font-bold text-sb-blue mb-1 flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-sb-blue" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                  Verified Sellers
+                </div>
+                Every seller is vetted for quality, authentic warranties, and on-time courier fulfillment.
+              </div>
+            </div>
+
+            <!-- Product Grid & Sorting Toolbar -->
+            <div class="lg:col-span-3">
+              
+              <!-- Toolbar -->
+              <div class="flex items-center justify-between bg-slate-50 px-4 py-3 rounded-xl border border-slate-200 mb-6 text-xs text-slate-600">
+                <div>
+                  Showing <span id="catalog-count" class="font-bold text-slate-900">0</span> products
+                </div>
+                <div class="flex items-center gap-2">
+                  <label for="catalog-sort" class="font-medium text-slate-500">Sort by:</label>
+                  <select id="catalog-sort" class="bg-white border border-slate-300 rounded-lg px-2.5 py-1 font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sb-blue">
+                    <option value="relevance">Relevance</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Highest Rated</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Products Grid -->
+              <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- Dynamically rendered via JS -->
+              </div>
+
+              <!-- Empty State -->
+              <div id="catalog-empty" class="hidden text-center py-16">
+                <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text-sb-blue mx-auto mb-4">
+                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <h3 class="text-base font-bold text-slate-800">No products found</h3>
+                <p class="text-xs text-slate-500 mt-1">Try adjusting your filters or search keywords.</p>
+                <button id="btn-empty-reset" class="mt-4 px-4 py-2 bg-sb-blue text-white text-xs font-bold rounded-full">Reset Filters</button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ==================== VIEW 2: SELLER CENTRAL DASHBOARD (FR-26 to FR-32) ==================== -->
+    <div id="view-seller" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <!-- Seller Header -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Verified Seller</span>
+            <span class="text-xs text-slate-500">ID: SL-4902</span>
+          </div>
+          <h2 class="text-2xl font-black text-[#0D2040] mt-1" id="seller-portal-store-name">Acoustic Labs Official</h2>
+          <p class="text-xs text-slate-500">Manage your product catalog, orders fulfillment, and payout settlements.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="btn-seller-bulk-upload" class="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
+            Bulk CSV Upload
+          </button>
+          <button id="btn-seller-add-product" class="px-4 py-2 text-xs font-bold text-white bg-sb-blue hover:bg-sb-blueDark rounded-xl shadow-md transition-all flex items-center gap-1.5">
+            + Add New Product
+          </button>
+        </div>
+      </div>
+
+      <!-- Seller KPI Analytics Cards (FR-30) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="text-xs font-bold text-slate-400 uppercase">Total Revenue (30d)</div>
+          <div class="text-2xl font-black text-slate-900 mt-2">$24,850.00</div>
+          <div class="text-xs text-emerald-600 font-semibold mt-1">↑ +18.4% vs last month</div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="text-xs font-bold text-slate-400 uppercase">Orders Received</div>
+          <div class="text-2xl font-black text-slate-900 mt-2">128 Orders</div>
+          <div class="text-xs text-sb-blue font-semibold mt-1">3 pending packing</div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="text-xs font-bold text-slate-400 uppercase">Active Listings</div>
+          <div class="text-2xl font-black text-slate-900 mt-2">8 SKUs</div>
+          <div class="text-xs text-amber-600 font-semibold mt-1">1 low stock alert</div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="text-xs font-bold text-slate-400 uppercase">Pending Payout (Wed)</div>
+          <div class="text-2xl font-black text-emerald-600 mt-2">$1,840.50</div>
+          <div class="text-xs text-slate-500 font-semibold mt-1">Net of 8% platform fee</div>
+        </div>
+      </div>
+
+      <!-- Seller Inventory Table (FR-27) -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="font-bold text-base text-slate-800">Your Store Listings</h3>
+          <span class="text-xs text-slate-500">Live synchronization with marketplace</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-500 uppercase font-bold border-b border-slate-100">
+              <tr>
+                <th class="py-3.5 px-4">Product</th>
+                <th class="py-3.5 px-4">SKU</th>
+                <th class="py-3.5 px-4">Price</th>
+                <th class="py-3.5 px-4">Stock</th>
+                <th class="py-3.5 px-4">Status</th>
+                <th class="py-3.5 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="seller-products-table-body" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Seller Orders Fulfillment & Shipping Label (FR-29) -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-base text-slate-800">Orders to Fulfill</h3>
+          <span class="text-xs text-slate-500">Print labels and update shipment milestones</span>
+        </div>
+        <div id="seller-orders-list" class="space-y-4">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== VIEW 3: ADMIN MODERATION PANEL (FR-35 to FR-39) ==================== -->
+    <div id="view-admin" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <!-- Admin Header -->
+      <div class="bg-[#0D2040] text-white p-6 rounded-2xl shadow-md mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-purple-500/30 text-purple-200 border border-purple-400/30 mb-2">
+            Platform Operator
+          </div>
+          <h2 class="text-2xl font-black">ShopBridge Admin Moderation & Control</h2>
+          <p class="text-xs text-slate-300">Marketplace supervision, seller approvals, dispute management, and audit logging.</p>
+        </div>
+        <div class="text-right">
+          <div class="text-xs text-slate-400">Gross Merchandise Value (GMV)</div>
+          <div class="text-2xl font-black text-emerald-400">$184,920.00</div>
+        </div>
+      </div>
+
+      <!-- Admin Tabs: Seller Applications, Disputes, Audit Logs -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Pending Seller Approvals (FR-36) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-base text-slate-800 mb-4 flex items-center justify-between">
+            <span>Pending Seller Onboarding</span>
+            <span id="admin-pending-count" class="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full font-bold">1 Pending</span>
+          </h3>
+          <div id="admin-seller-requests" class="space-y-3">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Platform Configuration & Commission Rules (FR-37) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-base text-slate-800 mb-4">Platform Fee & Tax Configurator</h3>
+          <div class="space-y-4 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-1">Standard Marketplace Commission (%)</label>
+              <div class="flex items-center gap-2">
+                <input type="number" id="admin-commission-input" value="8" min="2" max="25" class="w-24 p-2 border border-slate-300 rounded-lg text-slate-800 font-bold">
+                <button id="btn-save-commission" class="px-3 py-2 bg-sb-blue text-white rounded-lg font-bold">Update Rate</button>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Applies to all newly registered independent sellers.</p>
+            </div>
+            <div class="pt-3 border-t border-slate-100">
+              <label class="block font-semibold text-slate-700 mb-1">Standard Sales Tax / GST Rate (%)</label>
+              <input type="number" value="18" disabled class="w-24 p-2 bg-slate-100 border border-slate-300 rounded-lg text-slate-600 font-bold">
+            </div>
+          </div>
+        </div>
+
+        <!-- System Audit Logs (FR-39) -->
+        <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-base text-slate-800 mb-4">Marketplace Audit Logs (Immutable)</h3>
+          <div id="admin-audit-logs" class="space-y-2 max-h-60 overflow-y-auto divide-y divide-slate-100 text-xs">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== VIEW 4: CUSTOMER SUPPORT & TICKETS (FR-33 to FR-34) ==================== -->
+    <div id="view-support" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-8">
+        <h2 class="text-2xl font-black text-[#0D2040]">Customer Support & Dispute Desk</h2>
+        <p class="text-xs text-slate-500 mt-1">24/7 ticket escalation, buyer-seller disputes, and return approvals.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Live Support Tickets -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-base text-slate-800 mb-4">Active Support Cases</h3>
+          <div id="support-cases-list" class="space-y-3">
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+              <div class="flex items-center justify-between font-bold text-slate-800">
+                <span>Ticket #TCK-391 - Delivery Rescheduling</span>
+                <span class="px-2 py-0.5 bg-blue-100 text-sb-blue rounded-full">Open</span>
+              </div>
+              <p class="text-slate-600 mt-1.5">User Udhay Kumar requested delivery window after 4 PM for Order ORD-89421.</p>
+              <div class="mt-3 flex gap-2">
+                <button class="px-3 py-1 bg-emerald-600 text-white rounded font-semibold text-[11px]">Mark Resolved</button>
+                <button class="px-3 py-1 bg-slate-200 text-slate-700 rounded font-semibold text-[11px]">Reply to Buyer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Help Center FAQs -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 class="font-bold text-base text-slate-800 mb-4">Knowledge Base Articles</h3>
+          <div id="support-faq-list" class="space-y-2 text-xs">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-white border-t border-slate-200 py-12 mt-16 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-5 gap-8">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-sb-blue">
+            <svg class="w-5 h-5 text-sb-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 5h2.5l2.4 10.5a1.5 1.5 0 0 0 1.5 1.2h7.6a1.5 1.5 0 0 0 1.5-1.2L22.5 7.5H8.5"/></svg>
+          </div>
+          <span class="text-xl font-black text-[#0D2040]">Shop<span class="text-sb-blue">Bridge</span></span>
+        </div>
+        <p class="text-xs text-slate-500 max-w-sm leading-relaxed">
+          ShopBridge is an open e-commerce marketplace connecting shoppers with independent verified sellers worldwide. Buy. Sell. Grow Together.
+        </p>
+        <p class="mt-4 text-[11px] text-slate-400">
+          SRS v1.0 Compliant • PCI-DSS simulated safe checkout • ISO/IEC/IEEE 29148 Standard
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-slate-800 text-sm mb-3">Shop</h4>
+        <ul class="space-y-2">
+          <li><a href="#catalog" class="hover:text-sb-blue">All Products</a></li>
+          <li><a href="#catalog" class="hover:text-sb-blue">Trending Electronics</a></li>
+          <li><a href="#catalog" class="hover:text-sb-blue">Fashion & Accessories</a></li>
+          <li><a href="#catalog" class="hover:text-sb-blue">Home & Living</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-slate-800 text-sm mb-3">Sell on ShopBridge</h4>
+        <ul class="space-y-2">
+          <li><button id="footer-btn-sell" class="hover:text-sb-blue text-left">Become a Seller</button></li>
+          <li><a href="#" class="hover:text-sb-blue">Seller Handbook</a></li>
+          <li><a href="#" class="hover:text-sb-blue">Fee Structure (6-10%)</a></li>
+          <li><a href="#" class="hover:text-sb-blue">Seller Payouts</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-slate-800 text-sm mb-3">Support & Policies</h4>
+        <ul class="space-y-2">
+          <li><button id="footer-btn-help" class="hover:text-sb-blue text-left">24/7 Help Center</button></li>
+          <li><a href="#" class="hover:text-sb-blue">14-Day Return Policy</a></li>
+          <li><a href="#" class="hover:text-sb-blue">Terms & Conditions</a></li>
+          <li><a href="#" class="hover:text-sb-blue">Privacy & Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 mt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
+      <div>© 2026 ShopBridge Inc. All rights reserved.</div>
+      <div class="flex gap-4">
+        <span>Secure 256-Bit SSL Encrypted</span>
+        <span>•</span>
+        <span>Verified Multi-Vendor Platform</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== FLOATING 24/7 SUPPORT CHAT WIDGET (FR-33) ==================== -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <button id="btn-support-chat-toggle" class="bg-sb-blue hover:bg-sb-blueDark text-white p-4 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+    </button>
+  </div>
+
+  <!-- Chat Drawer / Window -->
+  <div id="support-chat-drawer" class="fixed bottom-24 right-6 w-96 max-w-[90vw] bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden hidden z-50 flex flex-col animate-modal-in" style="height: 520px;">
+    <!-- Chat Header -->
+    <div class="bg-sb-blue text-white p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm">
+          SB
+        </div>
+        <div>
+          <h4 class="font-bold text-sm">ShopBridge Support 24/7</h4>
+          <span class="text-[11px] text-blue-100 flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Live Agent Online
+          </span>
+        </div>
+      </div>
+      <button id="btn-close-chat" class="text-white/80 hover:text-white">✕</button>
+    </div>
+
+    <!-- Chat Messages Body -->
+    <div id="chat-messages-container" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs bg-slate-50">
+      <div class="flex gap-2">
+        <div class="w-6 h-6 rounded-full bg-blue-100 text-sb-blue flex items-center justify-center flex-shrink-0 font-bold text-[10px]">SB</div>
+        <div class="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-slate-100 max-w-[80%] text-slate-700">
+          Hello Udhay! Welcome to ShopBridge 24/7 Support. How can we assist you today?
+        </div>
+      </div>
+      <!-- Quick Options -->
+      <div class="flex flex-wrap gap-1.5 pt-2" id="chat-quick-replies">
+        <button class="chat-quick-btn px-2.5 py-1 bg-white border border-slate-200 text-sb-blue rounded-full text-[11px] hover:bg-blue-50">Track my order</button>
+        <button class="chat-quick-btn px-2.5 py-1 bg-white border border-slate-200 text-sb-blue rounded-full text-[11px] hover:bg-blue-50">Return & refund</button>
+        <button class="chat-quick-btn px-2.5 py-1 bg-white border border-slate-200 text-sb-blue rounded-full text-[11px] hover:bg-blue-50">How to sell</button>
+      </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
+      <input type="text" id="chat-user-input" placeholder="Type your message..." class="flex-1 text-xs bg-slate-100 rounded-xl px-3 py-2 focus:outline-none focus:ring-1 focus:ring-sb-blue">
+      <button id="btn-send-chat" class="p-2 bg-sb-blue hover:bg-sb-blueDark text-white rounded-xl">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODALS & DRAWERS ==================== -->
+
+  <!-- 1. CART DRAWER (FR-11 to FR-13) -->
+  <div id="cart-drawer-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden transition-opacity">
+    <div id="cart-drawer-panel" class="absolute top-0 right-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col animate-slide-in">
+      <!-- Drawer Header -->
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <h3 class="font-black text-lg text-[#0D2040]">Your Shopping Cart</h3>
+          <span id="cart-drawer-count-badge" class="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-sb-blue">0 items</span>
+        </div>
+        <button id="btn-close-cart" class="text-slate-400 hover:text-slate-700 p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Free Shipping Meter -->
+      <div class="p-3 bg-blue-50/70 border-b border-blue-100 px-5 text-xs">
+        <div class="flex justify-between font-semibold text-slate-700 mb-1">
+          <span id="shipping-meter-text">Add $50.00 more for Free Express Delivery!</span>
+          <span id="shipping-meter-pct">0%</span>
+        </div>
+        <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+          <div id="shipping-meter-bar" class="bg-sb-blue h-full w-0 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Cart Items List -->
+      <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 divide-y divide-slate-100">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Cart Footer & Checkout CTA -->
+      <div class="p-5 border-t border-slate-100 bg-slate-50 space-y-3">
+        <!-- Coupon input -->
+        <div class="flex gap-2">
+          <input type="text" id="cart-coupon-input" placeholder="Coupon code (e.g. SHOPBRIDGE10)" class="flex-1 text-xs uppercase px-3 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-sb-blue">
+          <button id="btn-apply-coupon" class="px-3 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-900">Apply</button>
+        </div>
+        <div id="coupon-applied-msg" class="text-[11px] text-emerald-600 font-semibold hidden"></div>
+
+        <!-- Totals Breakdown -->
+        <div class="space-y-1.5 text-xs text-slate-600 pt-2 border-t border-slate-200">
+          <div class="flex justify-between">
+            <span>Subtotal</span>
+            <span id="cart-subtotal-text" class="font-semibold text-slate-800">$0.00</span>
+          </div>
+          <div class="flex justify-between text-emerald-600 hidden" id="cart-discount-row">
+            <span>Coupon Discount</span>
+            <span id="cart-discount-text" class="font-semibold">-$0.00</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Estimated Shipping</span>
+            <span id="cart-shipping-text" class="font-semibold text-slate-800">FREE</span>
+          </div>
+          <div class="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-200">
+            <span>Total Amount</span>
+            <span id="cart-total-text" class="text-sb-blue">$0.00</span>
+          </div>
+        </div>
+
+        <button id="btn-proceed-checkout" class="w-full py-3.5 bg-sb-blue hover:bg-sb-blueDark text-white font-bold rounded-2xl shadow-lg shadow-blue-500/25 transition-all text-sm flex items-center justify-center gap-2">
+          Proceed to Checkout
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MULTI-STEP CHECKOUT MODAL (FR-14 to FR-19) -->
+  <div id="checkout-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-modal-in p-6 sm:p-8">
+      
+      <!-- Checkout Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div>
+          <span class="text-xs font-bold text-sb-blue uppercase">PCI-DSS Safe Gateway</span>
+          <h3 class="text-xl font-black text-[#0D2040]">Secure Checkout</h3>
+        </div>
+        <button id="btn-close-checkout" class="text-slate-400 hover:text-slate-600">✕</button>
+      </div>
+
+      <!-- Step Indicator -->
+      <div class="flex items-center justify-between my-6 px-4">
+        <div class="flex items-center gap-2 text-xs font-bold text-sb-blue" id="checkout-step-1-indicator">
+          <span class="w-6 h-6 rounded-full bg-sb-blue text-white flex items-center justify-center text-[11px]">1</span>
+          <span>Address</span>
+        </div>
+        <div class="flex-1 h-0.5 bg-slate-200 mx-2"></div>
+        <div class="flex items-center gap-2 text-xs font-bold text-slate-400" id="checkout-step-2-indicator">
+          <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[11px]">2</span>
+          <span>Delivery</span>
+        </div>
+        <div class="flex-1 h-0.5 bg-slate-200 mx-2"></div>
+        <div class="flex items-center gap-2 text-xs font-bold text-slate-400" id="checkout-step-3-indicator">
+          <span class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-[11px]">3</span>
+          <span>Payment</span>
+        </div>
+      </div>
+
+      <!-- Step 1: Address Form -->
+      <div id="checkout-step-1" class="space-y-4">
+        <h4 class="text-sm font-bold text-slate-800">1. Shipping Address</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div>
+            <label class="block font-semibold text-slate-600 mb-1">Full Name *</label>
+            <input type="text" id="chk-name" value="Udhay Kumar" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-1 focus:ring-sb-blue">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-600 mb-1">Phone Number *</label>
+            <input type="tel" id="chk-phone" value="+91 98765 43210" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-1 focus:ring-sb-blue">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-600 mb-1">Street Address *</label>
+            <input type="text" id="chk-street" value="42 Crescent Avenue, Tech Park" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-1 focus:ring-sb-blue">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-600 mb-1">City *</label>
+            <input type="text" id="chk-city" value="Bangalore" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-1 focus:ring-sb-blue">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-600 mb-1">Postal Code (PIN) *</label>
+            <input type="text" id="chk-zip" value="560100" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-1 focus:ring-sb-blue">
+          </div>
+        </div>
+        <div class="flex justify-end pt-4">
+          <button id="btn-step1-next" class="px-6 py-2.5 bg-sb-blue text-white font-bold rounded-xl text-xs hover:bg-sb-blueDark">
+            Continue to Delivery →
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Delivery Options -->
+      <div id="checkout-step-2" class="space-y-4 hidden">
+        <h4 class="text-sm font-bold text-slate-800">2. Select Delivery Speed</h4>
+        <div class="space-y-3 text-xs">
+          <label class="flex items-center justify-between p-4 rounded-xl border border-blue-300 bg-blue-50/50 cursor-pointer">
+            <div class="flex items-center gap-3">
+              <input type="radio" name="chk-delivery" value="0" checked class="accent-sb-blue">
+              <div>
+                <div class="font-bold text-slate-800">Standard Delivery (3-5 Days)</div>
+                <div class="text-slate-500">Shipped by BlueDart / DTDC logistics</div>
+              </div>
+            </div>
+            <span class="font-bold text-emerald-600">FREE</span>
+          </label>
+          <label class="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-blue-300 cursor-pointer">
+            <div class="flex items-center gap-3">
+              <input type="radio" name="chk-delivery" value="9.99" class="accent-sb-blue">
+              <div>
+                <div class="font-bold text-slate-800">ShopBridge Express Air (1-2 Days)</div>
+                <div class="text-slate-500">Guaranteed priority air fulfillment</div>
+              </div>
+            </div>
+            <span class="font-bold text-slate-800">$9.99</span>
+          </label>
+        </div>
+        <div class="flex justify-between pt-4">
+          <button id="btn-step2-back" class="px-5 py-2.5 text-slate-600 font-bold text-xs hover:underline">← Back</button>
+          <button id="btn-step2-next" class="px-6 py-2.5 bg-sb-blue text-white font-bold rounded-xl text-xs hover:bg-sb-blueDark">
+            Continue to Payment →
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Payment Options & Place Order -->
+      <div id="checkout-step-3" class="space-y-4 hidden">
+        <h4 class="text-sm font-bold text-slate-800">3. Payment Method (PCI-DSS Compliant)</h4>
+        
+        <div class="space-y-3 text-xs">
+          <!-- Option 1: Card -->
+          <label class="block p-4 rounded-xl border border-blue-300 bg-blue-50/40 cursor-pointer">
+            <div class="flex items-center gap-3 mb-3">
+              <input type="radio" name="chk-pay-method" value="card" checked class="accent-sb-blue">
+              <span class="font-bold text-slate-800">Credit / Debit Card (Visa, MC, Amex)</span>
+            </div>
+            <div class="space-y-2.5 pl-6" id="card-fields">
+              <input type="text" placeholder="Card Number (4242 •••• •••• 4242)" value="4242 8812 3901 4242" class="w-full p-2 bg-white border border-slate-300 rounded-lg">
+              <div class="grid grid-cols-2 gap-2">
+                <input type="text" placeholder="MM/YY" value="12/28" class="p-2 bg-white border border-slate-300 rounded-lg">
+                <input type="password" placeholder="CVV" value="882" class="p-2 bg-white border border-slate-300 rounded-lg">
+              </div>
+            </div>
+          </label>
+
+          <!-- Option 2: UPI -->
+          <label class="block p-4 rounded-xl border border-slate-200 hover:border-blue-300 cursor-pointer">
+            <div class="flex items-center gap-3">
+              <input type="radio" name="chk-pay-method" value="upi" class="accent-sb-blue">
+              <div>
+                <span class="font-bold text-slate-800">UPI Instant Pay</span>
+                <span class="text-slate-500 ml-1">(Google Pay, PhonePe, Paytm, BHIM)</span>
+              </div>
+            </div>
+          </label>
+
+          <!-- Option 3: COD -->
+          <label class="block p-4 rounded-xl border border-slate-200 hover:border-blue-300 cursor-pointer">
+            <div class="flex items-center gap-3">
+              <input type="radio" name="chk-pay-method" value="cod" class="accent-sb-blue">
+              <div>
+                <span class="font-bold text-slate-800">Cash on Delivery (COD)</span>
+                <span class="text-slate-500 ml-1">(Pay at doorstep upon delivery)</span>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Order Summary Box -->
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1.5 mt-4">
+          <div class="flex justify-between font-medium"><span>Items Subtotal:</span><span id="chk-summary-subtotal">$0.00</span></div>
+          <div class="flex justify-between font-medium"><span>Delivery:</span><span id="chk-summary-delivery">$0.00</span></div>
+          <div class="flex justify-between font-medium"><span>Tax & GST (Included):</span><span id="chk-summary-tax">$0.00</span></div>
+          <div class="flex justify-between text-base font-extrabold text-sb-blue pt-2 border-t border-slate-200">
+            <span>Total Payable:</span><span id="chk-summary-total">$0.00</span>
+          </div>
+        </div>
+
+        <div class="flex justify-between pt-4">
+          <button id="btn-step3-back" class="px-5 py-2.5 text-slate-600 font-bold text-xs hover:underline">← Back</button>
+          <button id="btn-place-order" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-emerald-600/25 transition-all">
+            Pay & Place Order
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3. INVOICE & ORDER CONFIRMATION MODAL (FR-18) -->
+  <div id="invoice-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 animate-modal-in printable-area">
+      <div class="flex justify-between items-start border-b border-slate-200 pb-6 mb-6">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-2xl font-black text-[#0D2040]">Shop<span class="text-sb-blue">Bridge</span></span>
+          </div>
+          <p class="text-xs text-slate-500">Tax Invoice / Receipt of Purchase</p>
+        </div>
+        <div class="text-right">
+          <div class="text-sm font-bold text-slate-800" id="inv-order-id">ORD-89421</div>
+          <div class="text-xs text-slate-500" id="inv-date">Nov 21, 2026</div>
+          <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
+            Payment Verified (PAID)
+          </span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-6 text-xs mb-6">
+        <div>
+          <h5 class="font-bold text-slate-700 uppercase text-[10px] mb-1">Billed & Shipped To:</h5>
+          <div id="inv-customer-name" class="font-bold text-slate-800">Udhay Kumar</div>
+          <div id="inv-customer-address" class="text-slate-600 leading-relaxed">42 Crescent Avenue, Tech Park<br>Bangalore, 560100</div>
+          <div id="inv-customer-phone" class="text-slate-500">+91 98765 43210</div>
+        </div>
+        <div>
+          <h5 class="font-bold text-slate-700 uppercase text-[10px] mb-1">Fulfillment Courier:</h5>
+          <div class="font-bold text-slate-800">ShopBridge Express Logistics</div>
+          <div class="text-slate-600" id="inv-tracking-no">Tracking: SBTK-99201488</div>
+          <div class="text-slate-500">Estimated Delivery: Within 48 hours</div>
+        </div>
+      </div>
+
+      <!-- Itemized Table -->
+      <table class="w-full text-left text-xs mb-6">
+        <thead class="bg-slate-50 text-slate-500 uppercase font-bold border-b border-slate-200">
+          <tr>
+            <th class="py-2.5 px-3">Item Description</th>
+            <th class="py-2.5 px-3 text-center">Qty</th>
+            <th class="py-2.5 px-3 text-right">Unit Price</th>
+            <th class="py-2.5 px-3 text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody id="inv-items-table" class="divide-y divide-slate-100">
+          <!-- Rendered via JS -->
+        </tbody>
+      </table>
+
+      <!-- Summary -->
+      <div class="flex justify-end mb-6">
+        <div class="w-64 space-y-1.5 text-xs text-slate-600">
+          <div class="flex justify-between"><span>Subtotal:</span><span id="inv-subtotal" class="font-bold text-slate-800">$0.00</span></div>
+          <div class="flex justify-between"><span>Discount:</span><span id="inv-discount" class="text-emerald-600 font-bold">-$0.00</span></div>
+          <div class="flex justify-between"><span>Shipping:</span><span id="inv-shipping" class="font-bold text-slate-800">FREE</span></div>
+          <div class="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-200">
+            <span>Grand Total:</span><span id="inv-total" class="text-sb-blue">$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex justify-between pt-4 border-t border-slate-200 no-print">
+        <button id="btn-print-invoice" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-xl text-xs flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          Print Invoice
+        </button>
+        <button id="btn-track-new-order" class="px-6 py-2.5 bg-sb-blue text-white font-bold rounded-xl text-xs hover:bg-sb-blueDark">
+          Track Live Delivery →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. ORDER TRACKING TIMELINE MODAL (FR-20 to FR-23) -->
+  <div id="tracking-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 animate-modal-in">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div>
+          <span class="text-xs font-bold text-sb-blue uppercase">Live Courier Telemetry</span>
+          <h3 class="text-lg font-black text-[#0D2040]">Real-Time Order Tracking</h3>
+        </div>
+        <button id="btn-close-tracking" class="text-slate-400 hover:text-slate-600">✕</button>
+      </div>
+
+      <div class="my-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between text-xs">
+        <div>
+          <div class="font-bold text-slate-800" id="trk-order-id">ORD-89421</div>
+          <div class="text-slate-500" id="trk-courier-name">BlueDart Express Logistics</div>
+        </div>
+        <div class="text-right">
+          <div class="text-sb-blue font-bold" id="trk-number">SBTK-99201488</div>
+          <div class="text-[11px] text-slate-400">Estimated: Today</div>
+        </div>
+      </div>
+
+      <!-- Tracking Timeline Steps -->
+      <div id="tracking-timeline-container" class="space-y-6 my-6 pl-2">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Order Actions (Cancel / Return) -->
+      <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+        <button id="btn-return-order" class="text-red-600 font-bold hover:underline">
+          Request Return / Replacement
+        </button>
+        <button id="btn-close-tracking-bottom" class="px-5 py-2 bg-slate-800 text-white rounded-xl font-bold">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. PRODUCT DETAILS & REVIEWS MODAL (FR-9, FR-24, FR-25) -->
+  <div id="quickview-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto p-6 sm:p-8 animate-modal-in relative">
+      <button id="btn-close-quickview" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600 z-10 p-2">✕</button>
+      <div id="quickview-modal-content">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. BECOME A SELLER ONBOARDING MODAL (FR-5, FR-26) -->
+  <div id="seller-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 animate-modal-in">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div>
+          <span class="text-xs font-bold text-sb-blue uppercase">Grow Together</span>
+          <h3 class="text-xl font-black text-[#0D2040]">Become a ShopBridge Seller</h3>
+        </div>
+        <button id="btn-close-seller-modal" class="text-slate-400 hover:text-slate-600">✕</button>
+      </div>
+
+      <form id="seller-onboarding-form" class="space-y-4 my-6 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Store / Business Name *</label>
+          <input type="text" id="seller-input-name" required placeholder="e.g. Apex Audio Labs" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-1 focus:ring-sb-blue">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Business Category *</label>
+          <select id="seller-input-category" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white focus:ring-1 focus:ring-sb-blue">
+            <option value="electronics">Electronics & Audio</option>
+            <option value="fashion">Fashion & Apparel</option>
+            <option value="home">Home & Kitchen</option>
+            <option value="beauty">Beauty & Personal Care</option>
+            <option value="sports">Sports & Outdoors</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Business Tax ID / GSTIN *</label>
+          <input type="text" id="seller-input-tax" required placeholder="e.g. GSTIN29AAAAA0000A1Z5" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-1 focus:ring-sb-blue">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Bank Account for Weekly Payouts *</label>
+          <input type="text" id="seller-input-bank" required placeholder="Bank Name & Account / IBAN" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-1 focus:ring-sb-blue">
+        </div>
+        <div class="pt-2">
+          <label class="flex items-start gap-2 text-slate-600 cursor-pointer">
+            <input type="checkbox" required class="mt-0.5 accent-sb-blue">
+            <span>I agree to the ShopBridge Seller Agreement and standard 6-10% commission policy.</span>
+          </label>
+        </div>
+        <div class="pt-4">
+          <button type="submit" class="w-full py-3 bg-sb-blue hover:bg-sb-blueDark text-white font-bold rounded-xl text-sm shadow-md transition-all">
+            Submit Seller Application
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Application Logic Modules -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
